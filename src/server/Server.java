@@ -3,6 +3,11 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+
+import server.game.entity.PlayerEntity;
+
 
 public class Server 
 {
@@ -12,6 +17,12 @@ public class Server
 	 * create client objects, and initialize the
 	 * game level 
 	 */
+	
+	//public static List<PlayerEntity> players = new ArrayList<PlayerEntity>();
+	
+	//public static List<Client> clients = new ArrayList<Client>();
+	
+	public static Map<Client, PlayerEntity> players = new HashMap<Client, PlayerEntity>();
 	
 	private static boolean running = true;
 	
@@ -56,6 +67,4 @@ public class Server
 		}
 		
 	}
-	
-
 }
