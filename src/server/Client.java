@@ -102,6 +102,7 @@ public class Client extends Thread
 		try
 		{
 			this.out.write(new String(p.getData()));
+			this.out.flush();
 		}
 		catch (IOException e)
 		{
