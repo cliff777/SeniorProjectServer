@@ -24,8 +24,31 @@ public class Client extends Thread
 	@Override
 	public void run()
 	{
+		//this player has joined, tell all other players to add another entity
+		for(Client client : Server.players.keySet())
+		{
+			if(client != this)
+			{
+				client.send("4:player");
+			}
+		}
+		
 		while(running)
 		{
+			
+			if(socket.isClosed())
+			{
+				//closed, tell all other players to remove an entity, make sure to exit this
+				for(Client client : Server.players.keySet())
+				{
+					if(client != this)
+					{
+						client.send("5:player");
+					}
+				}
+				
+				break;
+			}
 			try
 			{
 				in = new InputStreamReader(socket.getInputStream());
@@ -68,6 +91,28 @@ public class Client extends Thread
 			
 			String info = new String(data);
 			//we now have a string of data to work with sent to the server by the client
+			
+			String[] split = info.split(":");
+			
+			int id = Integer.parseInt(split[0]);
+			
+			switch(id)
+			{
+			case 1:
+				int newX = Integer.parseInt(split[1]);
+				int newY = Integer.parseInt(split[2]);
+				
+				Server.players.get(this).setX(newX);
+				Server.players.get(this).setY(newY);
+				
+				for(Client client : Server.players.keySet())
+				{
+					if(client != this)
+					{
+						client.send("1:" + newX + ":" + newY);
+					}
+				}
+			}
 		}
 		
 		try
@@ -77,6 +122,21 @@ public class Client extends Thread
 			out.close();
 		}
 		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		Server.players.remove(this);
+	}
+	
+	public void send(String info)
+	{
+		try
+		{
+			this.out.write(info);
+			this.out.flush();
+		}
+		catch(IOException e)
 		{
 			e.printStackTrace();
 		}
