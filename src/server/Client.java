@@ -24,20 +24,45 @@ public class Client extends Thread
 	@Override
 	public void run()
 	{
+		
+		try
+		{
+			in = new InputStreamReader(socket.getInputStream());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		try
+		{
+			out = new OutputStreamWriter(socket.getOutputStream());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		
 		//this player has joined, tell all other players to add another entity
 		for(Client client : Server.players.keySet())
 		{
 			if(client != this)
 			{
 				client.send("4:player");
+				//tell the player that just joined that there is another player
+				this.send("4:player");
 			}
 		}
+		
+		//
 		
 		while(running)
 		{
 			
-			if(socket.isClosed())
+			if(!socket.isConnected())
 			{
+				System.out.println("closed");
 				//closed, tell all other players to remove an entity, make sure to exit this
 				for(Client client : Server.players.keySet())
 				{
@@ -47,27 +72,9 @@ public class Client extends Thread
 					}
 				}
 				
-				break;
-			}
-			try
-			{
-				in = new InputStreamReader(socket.getInputStream());
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-				continue;
+				return;
 			}
 			
-			try
-			{
-				out = new OutputStreamWriter(socket.getOutputStream());
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-				continue;
-			}
 			
 			char[] cData = new char[1024];
 			
@@ -90,6 +97,7 @@ public class Client extends Thread
 			}
 			
 			String info = new String(data);
+			info = info.trim();
 			//we now have a string of data to work with sent to the server by the client
 			
 			String[] split = info.split(":");

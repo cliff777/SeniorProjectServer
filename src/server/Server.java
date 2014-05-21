@@ -54,7 +54,8 @@ public class Server
 				continue;
 			}
 			
-			new Client(socket);
+			Client client = new Client(socket);
+			players.put(client, new PlayerEntity(0, 0));
 		}
 		
 		try 
