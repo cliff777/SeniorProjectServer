@@ -1,4 +1,4 @@
-package server.game.entity;
+package server.game;
 
 public class PlayerEntity {
 	

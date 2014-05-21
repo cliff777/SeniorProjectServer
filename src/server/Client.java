@@ -5,9 +5,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-import server.packet.Packet;
-import server.packet.Packet00Login;
-import server.packet.Packet01Move;
 
 public class Client extends Thread
 {
@@ -20,6 +17,8 @@ public class Client extends Thread
 	public Client(Socket socket)
 	{
 		this.socket = socket;
+		
+		this.start();
 	}
 	
 	@Override
@@ -67,22 +66,8 @@ public class Client extends Thread
 				data[i] = (byte)cData[i];
 			}
 			
-			Packet p;
-			
-			int id = Integer.parseInt(String.valueOf(data[0]) + String.valueOf(data[1]));
-			
-			switch(id)
-			{
-			case 0:
-				p = new Packet00Login(data, this);
-				p.parse();
-				break;
-			case 1:
-				p = new Packet01Move(data, this);
-				p.parse();
-				break;
-			
-			}
+			String info = new String(data);
+			//we now have a string of data to work with sent to the server by the client
 		}
 		
 		try
@@ -97,17 +82,6 @@ public class Client extends Thread
 		}
 	}
 	
-	public void sendPacket(Packet p)
-	{
-		try
-		{
-			this.out.write(new String(p.getData()));
-			this.out.flush();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
+	
 	
 }

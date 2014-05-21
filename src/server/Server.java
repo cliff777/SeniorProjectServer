@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
-import server.game.entity.PlayerEntity;
+import server.game.PlayerEntity;
 
 
 public class Server 
@@ -54,7 +54,7 @@ public class Server
 				continue;
 			}
 			
-			new Client(socket).start();
+			new Client(socket);
 		}
 		
 		try 

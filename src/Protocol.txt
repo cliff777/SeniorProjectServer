@@ -1,0 +1,18 @@
+Client to Server
+	- joining the game
+		- '0'
+	- moving
+		- '1:newx:newy'
+	- leaving game
+		- '2'
+
+Server to Client
+	- map
+		- '3' + ':x:y:tileID' * n
+	- other client has moved
+		- '1:newx:newy'
+	- add entity
+		- '4:type'
+	- remove entity
+		- '5:type'
+		
