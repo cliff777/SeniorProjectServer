@@ -1,10 +1,6 @@
 Client to Server
-	- joining the game
-		- '0'
 	- moving
 		- '1:newx:newy'
-	- leaving game
-		- '2'
 
 Server to Client
 	- map
