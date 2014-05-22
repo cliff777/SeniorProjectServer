@@ -55,7 +55,7 @@ public class Server
 			}
 			
 			Client client = new Client(socket);
-			players.put(client, new PlayerEntity(0, 0));
+			players.put(client, new PlayerEntity("Name", 0, 0));
 		}
 		
 		try 

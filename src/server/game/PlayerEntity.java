@@ -3,11 +3,13 @@ package server.game;
 public class PlayerEntity {
 	
 	int x, y;
+	String name;
 	
-	public PlayerEntity(int x, int y)
+	public PlayerEntity(String name, int x, int y)
 	{
 		this.x = x;
 		this.y = y;
+		this.name = name;
 	}
 	
 	public int getX()
