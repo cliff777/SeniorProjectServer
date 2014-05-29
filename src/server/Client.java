@@ -5,8 +5,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import server.game.Tile;
 import server.packet.Packet;
 import server.packet.Packet01Move;
+import server.packet.Packet03TileUpdate;
 import server.packet.Packet04AddEntity;
 import server.packet.Packet05RemoveEntity;
 
@@ -70,7 +72,7 @@ public class Client extends Thread
 			
 			if(socket.isClosed())
 			{
-				
+				System.out.println("closed");
 			}
 			
 			
@@ -83,6 +85,7 @@ public class Client extends Thread
 			catch (IOException e)
 			{
 				e.printStackTrace();
+				
 				try
 				{
 					socket.close();
@@ -137,21 +140,18 @@ public class Client extends Thread
 				
 				break;
 				
-				/*
-				int newX = Integer.parseInt(split[1]);
-				int newY = Integer.parseInt(split[2]);
-				
-				Server.players.get(this).setX(newX);
-				Server.players.get(this).setY(newY);
-				
-				for(Client client : Server.players.keySet())
-				{
-					if(client != this)
-					{
-						new Packet01Move("1:" + newX + ":" + newY).send(client.getOutput());
-					}
-				}
-				*/
+			case 3:
+				Packet03TileUpdate p03 = new Packet03TileUpdate(info);
+				 Tile t = p03.getTile();
+				 
+				 //let all other players know about the tile change
+				 for(Client client : Server.players.keySet())
+				 {
+					 if(client != this)
+						 p03.send(client.getOutput());
+				 }
+				 
+				break;
 			}
 		}
 		
