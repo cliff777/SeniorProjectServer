@@ -143,12 +143,16 @@ public class Client extends Thread
 			case 3:
 				Packet03TileUpdate p03 = new Packet03TileUpdate(info);
 				 Tile t = p03.getTile();
+				 System.out.println("got tile update packet");
 				 
 				 //let all other players know about the tile change
 				 for(Client client : Server.players.keySet())
 				 {
 					 if(client != this)
+					 {
 						 p03.send(client.getOutput());
+						 System.out.println("sending out tile update packet");
+					 }
 				 }
 				 
 				break;
