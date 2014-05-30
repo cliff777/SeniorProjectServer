@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-import server.game.Tile;
 import server.packet.Packet;
 import server.packet.Packet01Move;
 import server.packet.Packet03TileUpdate;
@@ -142,8 +141,8 @@ public class Client extends Thread
 				
 			case 3:
 				Packet03TileUpdate p03 = new Packet03TileUpdate(info);
-				 Tile t = p03.getTile();
-				 System.out.println("got tile update packet");
+
+				System.out.println("got tile update packet");
 				 
 				 //let all other players know about the tile change
 				 for(Client client : Server.players.keySet())
